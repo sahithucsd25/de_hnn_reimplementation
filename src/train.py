@@ -11,7 +11,7 @@ import csv
 from pyg_dataset import NetlistDataset
 from model import GNN_node
 
-test = False
+test = True
 n_epochs = 50
 
 dataset = NetlistDataset(data_dir='../data/processed_datasets', graph_indices=[40])
@@ -116,17 +116,18 @@ train_f1, train_net_l1 = evaluate_model(model, h_dataset, 'train', device)
 valid_f1, valid_net_l1 = evaluate_model(model, h_dataset, 'valid', device)
 test_f1, test_net_l1 = evaluate_model(model, h_dataset, 'test', device)
 
-with open('../results/losses_node.csv', 'w', newline='') as csvfile:
-    writer = csv.writer(csvfile)
-    writer.writerow(['Epoch', 'Train Loss', 'Valid Loss'])
-    for epoch_idx, losses in losses_all.items():
-        writer.writerow([epoch_idx, losses['Train'][0], losses['Valid'][0]])
+if not test:
+    with open('../results/losses_node.csv', 'w', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(['Epoch', 'Train Loss', 'Valid Loss'])
+        for epoch_idx, losses in losses_all.items():
+            writer.writerow([epoch_idx, losses['train'][0], losses['valid'][0]])
 
-with open('../results/losses_net.csv', 'w', newline='') as csvfile:
-    writer = csv.writer(csvfile)
-    writer.writerow(['Epoch', 'Train Loss', 'Valid Loss'])
-    for epoch_idx, losses in losses_all.items():
-        writer.writerow([epoch_idx, losses['Train'][1], losses['Valid'][1]])
+    with open('../results/losses_net.csv', 'w', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(['Epoch', 'Train Loss', 'Valid Loss'])
+        for epoch_idx, losses in losses_all.items():
+            writer.writerow([epoch_idx, losses['train'][1], losses['valid'][1]])
 
 with open('../results/eval_metrics.csv', 'w', newline='') as csvfile:
     writer = csv.writer(csvfile)
