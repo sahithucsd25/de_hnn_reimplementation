@@ -46,7 +46,7 @@ for data in tqdm(dataset):
 
     h_dataset.append(h_data)
 
-device = "cuda"
+device = "cpu"
 
 model = GNN_node(4, 32, 8, 1, node_dim = data.node_features.shape[1], net_dim = data.net_features.shape[1]).to(device) #, vn=True
 
