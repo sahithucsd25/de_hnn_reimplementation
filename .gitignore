@@ -1,0 +1,11 @@
+2023-03-06_data/
+NCSU-DigIC-GraphData-2023-07-25/
+synthetic_data/
+data/processed_datasets
+checking_data.ipynb
+pyg_dataset_old.py
+train_all_template.py
+train_test.ipynb
+*.pyc
+.DS_Store
+requirements.txt
