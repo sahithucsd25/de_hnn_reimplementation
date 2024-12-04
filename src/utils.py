@@ -84,4 +84,4 @@ def evaluate_model(model, dataset, split, device):
             print('OOM')
             continue
 
-    return total_f1/len(dataset), total_net_l1.item()/len(dataset)
+    return total_f1/len(dataset), total_net_l1/len(dataset)

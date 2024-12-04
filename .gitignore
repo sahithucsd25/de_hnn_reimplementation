@@ -2,6 +2,7 @@
 NCSU-DigIC-GraphData-2023-07-25/
 synthetic_data/
 data/processed_datasets
+data/processed_datasets.zip
 checking_data.ipynb
 pyg_dataset_old.py
 train_all_template.py

@@ -68,7 +68,7 @@ else:
         val_loss_net_all = 0
 
         losses_all[str(epoch)] = {}
-
+        train_flawless = 0
         model.train()
         for chip in tqdm(h_dataset):
             try:
@@ -80,6 +80,7 @@ else:
                 loss = loss_node + 0.001*loss_net
                 loss.backward()
                 optimizer.step()
+                train_flawless += 1
             except:
                 print('OOM')
                 continue
@@ -87,8 +88,9 @@ else:
             loss_node_all += loss_node.item()
             loss_net_all += loss_net.item()
 
-        losses_all[str(epoch)]['train'] = [loss_node_all/len(h_dataset), loss_net_all/len(h_dataset)]
+        losses_all[str(epoch)]['train'] = [loss_node_all/train_flawless, loss_net_all/train_flawless]
 
+        valid_flawless = 0
         model.eval()
         for chip in tqdm(h_dataset):
             try:
@@ -99,15 +101,16 @@ else:
 
                 val_loss_node_all += val_loss_node.item()
                 val_loss_net_all += val_loss_net.item()
+                valid_flawless += 1
             except:
                 print("OOM")
                 continue
         
-        if (best_total_val is None) or ((val_loss_node_all/len(h_dataset)) < best_total_val):
-            best_total_val = val_loss_node_all/len(h_dataset)
+        if (best_total_val is None) or ((val_loss_node_all/valid_flawless) < best_total_val):
+            best_total_val = val_loss_node_all/valid_flawless
             torch.save(model, '../results/best_dehnn_model.pt')
 
-        losses_all[str(epoch)]['valid'] = [val_loss_node_all/len(h_dataset), val_loss_net_all/len(h_dataset)]
+        losses_all[str(epoch)]['valid'] = [val_loss_node_all/valid_flawless, val_loss_net_all/valid_flawless]
 
 train_f1, train_net_l1 = evaluate_model(model, h_dataset, 'train', device)
 valid_f1, valid_net_l1 = evaluate_model(model, h_dataset, 'valid', device)
