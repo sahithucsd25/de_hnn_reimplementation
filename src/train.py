@@ -12,9 +12,9 @@ from pyg_dataset import NetlistDataset
 from model import GNN_node
 
 test = False
-n_epochs = 100
+n_epochs = 50
 
-dataset = NetlistDataset(data_dir='../data/processed_datasets')
+dataset = NetlistDataset(data_dir='../data/processed_datasets', graph_indices=[40])
 
 h_dataset = []
 for data in tqdm(dataset):
