@@ -1,5 +1,5 @@
 # DE-HNN Re-implementation
-
+```
 de_hnn_reimplementation/
 ├── data/ - Store processed_datasets here
 ├── plots/ - Contains loss plots
@@ -13,6 +13,7 @@ de_hnn_reimplementation/
 ├── environment.yml
 ├── README.md
 └── run.py - Build script
+```
 
 ### Retrieving the data
 
