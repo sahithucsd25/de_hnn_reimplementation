@@ -1,12 +1,8 @@
 import torch
 import torch.nn
 from tqdm import tqdm
-
-def compute_accuracy(logits, targets):
-    predicted_classes = torch.argmax(logits, dim=1)
-    correct_predictions = (predicted_classes.long() == targets.long()).sum().item()
-    accuracy = correct_predictions / targets.size(0)
-    return accuracy
+import pandas as pd
+import matplotlib.pyplot as plt
 
 def compute_binary_accuracy(logits, targets):
     # Convert logits to binary predictions (0 or 1)
@@ -54,6 +50,7 @@ def compute_degrees(edge_index, num_nodes=None):
     return degree
 
 def evaluate_model(model, dataset, split, device):
+    # Compute F1 and MAE
     total_f1 = 0
     total_net_l1 = 0
 
@@ -85,3 +82,30 @@ def evaluate_model(model, dataset, split, device):
             continue
 
     return total_f1/len(dataset), total_net_l1.item()/len(dataset)
+
+def plot_losses(comp):
+    data = pd.read_csv(f'results/losses_{comp}.csv')
+    capitalized = comp[0].upper() + comp[1:] 
+    loss = 'MSE' if comp=='net' else 'Binary Cross-Entropy'
+
+    plt.rcParams.update({
+        'font.size': 14,  # General font size
+        'axes.titlesize': 18,  # Title font size
+        'axes.labelsize': 16,  # X and Y label size
+        'xtick.labelsize': 14,  # X-axis tick label size
+        'ytick.labelsize': 14,  # Y-axis tick label size
+        'legend.fontsize': 14  # Legend font size
+    })
+
+    # Plotting the losses
+    plt.figure(figsize=(10, 6))
+    plt.plot(data['Epoch'], data['Train Loss'], label='Train Loss') # , marker='o'
+    plt.plot(data['Epoch'], data['Valid Loss'], label='Validation Loss') # , marker='o'
+    plt.xlabel('Epoch')
+    plt.ylabel(f'{loss} Loss')
+    plt.title(f'{capitalized} Training and Validation Loss per Epoch')
+    plt.legend()
+    plt.grid(True)
+
+    # Save the plot in the 'visualizations' folder
+    plt.savefig(f'plots/{comp}_loss.png')

@@ -7,6 +7,8 @@ import os
 from utils import *
 import numpy as np
 
+import sys
+# sys.path.insert(1, 'data/')
 from tqdm import tqdm
 
 class NetlistDataset(Dataset):
@@ -26,7 +28,8 @@ class NetlistDataset(Dataset):
             if graph_index in skip_indices: continue
 
             if processed:
-                data_load_fp = os.path.join('../data', 'processed_datasets', f'{str(graph_index)}.pyg_data.pkl')
+                # Get processed data
+                data_load_fp = os.path.join('data', 'processed_datasets', f'{str(graph_index)}.pyg_data.pkl') #../
                 data = torch.load(data_load_fp)
             else:
                 # Get train-test-split
@@ -150,7 +153,7 @@ class NetlistDataset(Dataset):
                     net_test_indices = net_test_indices
                 )
 
-                data_save_fp = os.path.join('../data', 'processed_datasets', f'{str(graph_index)}.pyg_data.pkl')
+                data_save_fp = os.path.join('data', 'processed_datasets', f'{str(graph_index)}.pyg_data.pkl')
                 torch.save(data, data_save_fp)
                 
             data['design_index'] = graph_index

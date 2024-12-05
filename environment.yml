@@ -12,4 +12,6 @@ dependencies:
     - torch==2.3.0
     - torch-geometric==2.5.3
     - tqdm==4.67.1
+    - matplotlib
+    - pandas
 prefix: /Users/sahithcherumandanda/anaconda3/envs/de_hnn
